@@ -23,7 +23,7 @@
     device = "nodev"; # Set to your boot drive (e.g., /dev/sda)
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "dok4ever"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
