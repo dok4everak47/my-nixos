@@ -188,6 +188,8 @@
 
      steam
 
+     haruna
+
   ];
 
   # 将默认编辑器设置为 nvim
