@@ -166,14 +166,19 @@
      wpsoffice-cn
      fish
 
-     v2rayn
      xray
+     mihomo
+     clashtui
 
      vscode
 
      alacritty
 
      linuxKernel.packages.linux_6_12.cpupower
+
+     yutto
+
+     haruna
 
   ];
 
