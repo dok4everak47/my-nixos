@@ -172,6 +172,8 @@
 
      alacritty
 
+     linuxKernel.packages.linux_6_12.cpupower
+
   ];
 
   # 将默认编辑器设置为 nvim
