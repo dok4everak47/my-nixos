@@ -181,6 +181,8 @@
 
      haruna
 
+     metacubexd
+
   ];
 
   # 将默认编辑器设置为 nvim
@@ -211,6 +213,27 @@
       };
     };
   };
+
+  # 配置Mihomo
+  services.mihomo = {
+    enable = true;
+    configFile = "/home/dok4ever/.config/mihomo/config.yaml";
+    webui = pkgs.metacubexd;
+    #...
+  };
+
+  # 设置system proxy
+  environment.sessionVariables = {
+    HTTP_PROXY = "http://127.0.0.1:7890";
+    HTTPS_PROXY = "http://127.0.0.1:7890";
+    ALL_PROXY = "http://127.0.0.1:7890";
+  };
+  
+
+  # services.mihomo.enable = true;
+  # services.mihomo.webui = pkgs.metacubexd;
+  # services.mihomo.configFile = "/home/dok4ever/.config/mihomo/config.yaml";
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
