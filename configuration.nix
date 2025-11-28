@@ -169,6 +169,7 @@
      xray
      mihomo
      clashtui
+     clash-verge-rev
 
      vscode
 
