@@ -167,6 +167,7 @@
      fish
 
      v2rayn
+     xray
 
      vscode
 
