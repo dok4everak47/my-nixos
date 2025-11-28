@@ -39,6 +39,8 @@
     xz
     unzip
     p7zip
+    kdePackages.ark
+    unrar
 
     # utils
     ripgrep # recursively searches directories for a regex pattern
