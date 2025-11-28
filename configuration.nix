@@ -81,15 +81,17 @@
   # 或者对所有用户设置（可选）
   # users.defaultUserShell = pkgs.fish;
 
+  services.xserver.videoDrivers = [ "modesetting" ];
+
    hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver
-      vpl-gpu-rt          # for newer GPUs on NixOS >24.05 or unstable
-      # onevpl-intel-gpu  # for newer GPUs on NixOS <= 24.05
-      # intel-media-sdk   # for older GPUs
-    ];
-  };
+     enable = true;
+     extraPackages = with pkgs; [
+       intel-media-driver
+       vpl-gpu-rt          # for newer GPUs on NixOS >24.05 or unstable
+       # onevpl-intel-gpu  # for newer GPUs on NixOS <= 24.05
+       # intel-media-sdk   # for older GPUs
+     ];
+   };
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";     # Prefer the modern iHD backend
