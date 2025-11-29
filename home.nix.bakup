@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs,  ... }:
 
 {
   # 注意修改这里的用户名与用户目录
@@ -39,6 +39,8 @@
     xz
     unzip
     p7zip
+    kdePackages.ark
+    unrar
 
     # utils
     ripgrep # recursively searches directories for a regex pattern
@@ -103,23 +105,29 @@
   };
 
   # alacritty - 一个跨平台终端，带 GPU 加速功能
-  programs.alacritty = {
-    enable = true;
+  # programs.alacritty = {
+  #   enable = true;
     # 自定义配置
-    settings = {
-      env.TERM = "xterm-256color";
-      font = {
-        size = 12;
-      };
-      scrolling.multiplier = 5;
-      selection.save_to_clipboard = true;
-    };
+  #  settings = {
+  #     env.TERM = "xterm-256color";
+  #     font = {
+  #       size = 12;
+  #     };
+  #     scrolling.multiplier = 5;
+  #    selection.save_to_clipboard = true;
+  #  };
+  # };
+
+  # 启用kitty
+  programs.kitty = {
+    enable = true;
   };
 
+  # 启用 Fish shell
   programs.fish.enable = true;
-  programs.fish.shellAliases = {
-    a = "b";
-  };
+
+  
+
    
   programs.bash = {
     enable = true;
@@ -136,6 +144,31 @@
       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
     };
   };
+
+
+  # ============ 新增 AstroVim 配置 ============
+  
+  # 改为使用启动脚本和符号链接
+  home.file.".config/nvim" = {
+    source = config.lib.file.mkOutOfStoreSymlink 
+      (pkgs.fetchFromGitHub {
+        owner = "dok4everak47";
+        repo = "My-AstroVim-Config";
+        rev = "main";
+        sha256 = "sha256-3exKmvxFYzpoFAQ0bkHAuTFupEvpB7cmSnpMVSW1JrY=";
+      });
+  };
+
+  # 设置默认编辑器
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+
+  # 确保必要的目录存在
+  home.activation.createConfigDir = config.lib.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p ${config.home.homeDirectory}/.config
+  '';
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

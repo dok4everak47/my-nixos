@@ -77,6 +77,9 @@
   # 设置 fish 为默认 shell
   users.users.dok4ever.shell = pkgs.fish;
 
+  # 配置蓝牙
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
   
   # 或者对所有用户设置（可选）
   # users.defaultUserShell = pkgs.fish;
