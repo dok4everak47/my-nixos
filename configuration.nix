@@ -204,8 +204,30 @@
      obs-studio
 
      rmpc
+     mpd
 
   ];
+
+  # 配置MPD
+  services.mpd = {
+  enable = true;
+  musicDirectory = "/home/dok4ever/Music";
+  extraConfig = ''
+    # must specify one or more outputs in order to play audio!
+    # (e.g. ALSA, PulseAudio, PipeWire), see next sections
+    audio_output {
+      type "pipewire"
+      name "My PipeWire Output"
+    }
+  '';
+
+  # Optional:
+  network.listenAddress = "any"; # if you want to allow non-localhost connections
+};
+
+services.mpd.user = "dok4ever";
+
+
 
   # 将默认编辑器设置为 nvim
   environment.variables.EDITOR = "nvim";
