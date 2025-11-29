@@ -177,7 +177,6 @@
      fastfetch
      yazi
      kdePackages.filelight
-     # kitty
      yt-dlp
      wpsoffice-cn
      fish
@@ -186,7 +185,8 @@
 
      vscode
 
-     alacritty
+     # alacritty
+     kitty
 
      steam
 
