@@ -201,6 +201,10 @@
 
      telegram-desktop
 
+     obs-studio
+
+     rmpc
+
   ];
 
   # 将默认编辑器设置为 nvim
