@@ -30,9 +30,9 @@
           # 下载并使用 fastfetch 配置文件
           environment.etc."fastfetch/config.jsonc".source =
             builtins.fetchurl {
-              url = "https://raw.githubusercontent.com/fastfetch-cli/fastfetch/dev/presets/examples/24.jsonc";
+              url = "https://raw.githubusercontent.com/dok4everak47/fastfetch-presets/main/24.jsonc";
               # 第一次构建时会报错，使用报错中提示的正确 hash 替换下面的值
-              sha256 = "0yz4mpwjglk7420whk20r8m90nwydp4pddi5ghy3s7jril7yfd4m";
+              sha256 = "1mr39b0xfpg48nrrdwnjzhvcmn0qfi702l14s1ylxb842szlsaap";
             };
         })
       ];
