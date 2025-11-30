@@ -206,6 +206,9 @@
      rmpc
      mpd
 
+     vicinae
+
+
   ];
 
   # 配置MPD
@@ -240,6 +243,7 @@ services.mpd.user = "dok4ever";
       wqy_zenhei
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
+      fira-code
       
       # 可选：其他中文字体
       source-han-sans
