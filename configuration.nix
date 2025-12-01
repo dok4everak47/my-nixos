@@ -26,11 +26,6 @@
   networking.hostName = "dok4ever"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # 配置蓝牙
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
-
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -82,19 +77,33 @@
   # 设置 fish 为默认 shell
   users.users.dok4ever.shell = pkgs.fish;
 
-  
+  # 配置蓝牙
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
   # 或者对所有用户设置（可选）
   # users.defaultUserShell = pkgs.fish;
 
+  services.xserver.videoDrivers = [ "modesetting" ];
+
    hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      vpl-gpu-rt          # for newer GPUs on NixOS >24.05 or unstable
-      # onevpl-intel-gpu  # for newer GPUs on NixOS <= 24.05
-      # intel-media-sdk   # for older GPUs
-    ];
+     enable = true;
+     extraPackages = with pkgs; [
+       intel-media-driver
+       vpl-gpu-rt          # for newer GPUs on NixOS >24.05 or unstable
+       # onevpl-intel-gpu  # for newer GPUs on NixOS <= 24.05
+       # intel-media-sdk   # for older GPUs
+     ];
+   };
+
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";     # Prefer the modern iHD backend
+    # VDPAU_DRIVER = "va_gl";      # Only if using libvdpau-va-gl
   };
 
+  # May help if FFmpeg/VAAPI/QSV init fails (esp. on Arc with i915):
+  hardware.enableRedistributableFirmware = true;
+  boot.kernelParams = [ "i915.enable_guc=3" ];
 
 
   # Enable the X11 windowing system.
@@ -166,58 +175,36 @@
      fastfetch
      yazi
      kdePackages.filelight
-     # kitty
      yt-dlp
      wpsoffice-cn
      fish
 
-     xray
-     mihomo
-     clashtui
-     clash-verge-rev
+     v2rayn
 
      vscode
 
-     alacritty
-
-     linuxKernel.packages.linux_6_12.cpupower
-
-     yutto
+     # alacritty
+     kitty
 
      haruna
 
-     metacubexd
+     vdhcoapp
+
+     yutto
+
+     telegram-desktop
+
+     obs-studio
+
+     rmpc
+     mpd
+
+     vicinae
+
+     mihomo
+
 
   ];
-
-  # 将默认编辑器设置为 nvim
-  environment.variables.EDITOR = "nvim";
-
-  fonts = {
-    fonts = with pkgs; [
-      dejavu_fonts
-      # 中文字体包
-      wqy_microhei
-      wqy_zenhei
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
-      
-      # 可选：其他中文字体
-      source-han-sans
-      source-han-serif
-      sarasa-gothic
-    ];
-    
-    # 启用字体缓存
-    fontconfig = {
-      enable = true;
-      defaultFonts = {
-        monospace = [ "Sarasa Mono SC" "DejaVu Sans Mono" ];
-        sansSerif = [ "Source Han Sans SC" "Noto Sans CJK SC" ];
-        serif = [ "Source Han Serif SC" "Noto Serif CJK SC" ];
-      };
-    };
-  };
 
   # 配置Mihomo
   services.mihomo = {
@@ -233,12 +220,57 @@
     HTTPS_PROXY = "http://127.0.0.1:7890";
     ALL_PROXY = "http://127.0.0.1:7890";
   };
-  
 
-  # services.mihomo.enable = true;
-  # services.mihomo.webui = pkgs.metacubexd;
-  # services.mihomo.configFile = "/home/dok4ever/.config/mihomo/config.yaml";
+  # 配置MPD
+  services.mpd = {
+  enable = true;
+  musicDirectory = "/home/dok4ever/Music";
+  extraConfig = ''
+    # must specify one or more outputs in order to play audio!
+    # (e.g. ALSA, PulseAudio, PipeWire), see next sections
+    audio_output {
+      type "pipewire"
+      name "My PipeWire Output"
+    }
+  '';
 
+  # Optional:
+  network.listenAddress = "any"; # if you want to allow non-localhost connections
+};
+
+services.mpd.user = "dok4ever";
+
+
+
+  # 将默认编辑器设置为 nvim
+  environment.variables.EDITOR = "nvim";
+
+  fonts = {
+    fonts = with pkgs; [
+      dejavu_fonts
+      # 中文字体包
+      wqy_microhei
+      wqy_zenhei
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      fira-code
+
+      # 可选：其他中文字体
+      source-han-sans
+      source-han-serif
+      sarasa-gothic
+    ];
+
+    # 启用字体缓存
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        monospace = [ "Sarasa Mono SC" "DejaVu Sans Mono" ];
+        sansSerif = [ "Source Han Sans SC" "Noto Sans CJK SC" ];
+        serif = [ "Source Han Serif SC" "Noto Serif CJK SC" ];
+      };
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -265,7 +297,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  
+
   nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
   system.stateVersion = "25.11"; # Did you read the comment?
 
