@@ -208,6 +208,10 @@
     clang-tools
 
     fira-code
+    mononoki
+    font-awesome_4
+
+    ripgrep
 
   ];
 
@@ -256,18 +260,19 @@ services.mpd.user = "dok4ever";
       wqy_zenhei
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
-      fira-code
 
       # 可选：其他中文字体
       source-han-sans
       source-han-serif
       sarasa-gothic
+
+      mononoki
   ];
 
   fonts.fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "FiraCode" "DejaVu Sans Mono" ];
+        monospace = [ "Mononoki" "DejaVu Sans Mono" ];
         sansSerif = [ "Source Han Sans SC" "Noto Sans CJK SC" ];
         serif = [ "Source Han Serif SC" "Noto Serif CJK SC" ];
       };

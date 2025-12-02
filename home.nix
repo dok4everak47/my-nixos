@@ -196,18 +196,6 @@ in
     '';
   };
 
-  # ============ 删除错误的 activationScripts ============
-  # 删除下面这整个块，它会导致错误：
-  # system.activationScripts.setupKitty = ''
-  #   mkdir -p /home/yourusername/.config/kitty
-  #   cat > /home/yourusername/.config/kitty/kitty.conf << EOF
-  #   font_family      JetBrains Mono
-  #   font_size        11.0
-  #   bold_font        auto
-  #   italic_font      auto
-  #   bold_italic_font auto
-  #   EOF
-  # '';
 
   # ============ 方法1：直接克隆 Fish 配置仓库 ============
   programs.fish.enable = true;
