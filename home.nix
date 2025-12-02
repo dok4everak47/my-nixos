@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib,  ... }:
+{ config, pkgs, inputs, lib, ... }:
 
 let
   # 创建包含所有必要 Python 工具的 Python 环境
@@ -13,21 +13,12 @@ let
     pipx
   ]);
 
-  # 获取你的 AstroVim 配置
-  astronvimConfig = pkgs.fetchFromGitHub {
-    owner = "dok4everak47";
-    repo = "My-AstroVim-Config";
-    rev = "main";
-    sha256 = "sha256-3exKmvxFYzpoFAQ0bkHAuTFupEvpB7cmSnpMVSW1JrY=";
-  };
-
   # 获取你的 Fish 配置
   myFishConfig = pkgs.fetchFromGitHub {
     owner = "dok4everak47";
     repo = "my_fish_config";
     rev = "My_PC_NixOS";
     sha256 = "sha256-EJSp4el45ls1B0eGyknDoMgQXT380WhD7rc7/bNhrR8=";
-    # sha256 = "sha256-tchS1AQH7UXK9EN2WKUj3pGuB29t4jrTb0mLsjQKbXA="; # main
   };
 
 in
@@ -53,23 +44,23 @@ in
     unrar
 
     # utils
-    ripgrep # recursively searches directories for a regex pattern
-    jq # A lightweight and flexible command-line JSON processor
-    yq-go # yaml processor https://github.com/mikefarah/yq
-    eza # A modern replacement for ‘ls'
-    fzf # A command-line fuzzy finder
+    ripgrep
+    jq
+    yq-go
+    eza
+    fzf
     bat
     curl
 
     # networking tools
-    mtr # A network diagnostic tool
+    mtr
     iperf3
-    dnsutils  # `dig` + `nslookup`
-    ldns # replacement of `dig`, it provide the command `drill`
-    aria2 # A lightweight multi-protocol & multi-source command-line download utility
-    socat # replacement of openbsd-netcat
-    nmap # A utility for network discovery and security auditing
-    ipcalc  # it is a calculator for the IPv4/v6 addresses
+    dnsutils
+    ldns
+    aria2
+    socat
+    nmap
+    ipcalc
 
     # misc
     cowsay
@@ -83,30 +74,27 @@ in
     gnupg
 
     # nix related
-    #
-    # it provides the command `nom` works just like `nix`
-    # with more details log output
     nix-output-monitor
 
     # productivity
-    hugo # static site generator
-    glow # markdown previewer in terminal
+    hugo
+    glow
 
-    btop  # replacement of htop/nmon
-    iotop # io monitoring
-    iftop # network monitoring
+    btop
+    iotop
+    iftop
 
     # system call monitoring
-    strace # system call monitoring
-    ltrace # library call monitoring
-    lsof # list open files
+    strace
+    ltrace
+    lsof
 
     # system tools
     sysstat
-    lm_sensors # for `sensors` command
+    lm_sensors
     ethtool
-    pciutils # lspci
-    usbutils # lsusb
+    pciutils
+    usbutils
 
     # ============ 修正的 AstroVim 相关依赖 ============
     myPython
@@ -149,43 +137,77 @@ in
     userEmail = "dok4ever@qq.com";
   };
 
-  # 启用kitty
+  # ============ 修正的 Kitty 配置 ============
+  programs.kitty = {
+    enable = true;
 
-  programs.kitty = lib.mkForce {
-  enable = true;
-  settings = {
-    confirm_os_window_close = 0;
-    dynamic_background_opacity = true;
-    enable_audio_bell = false;
-    mouse_hide_wait = "-1.0";
-    window_padding_width = 10;
-    background_opacity = "0.5";
-    background_blur = 5;
-    symbol_map = let
-      mappings = [
-        "U+23FB-U+23FE"
-        "U+2B58"
-        "U+E200-U+E2A9"
-        "U+E0A0-U+E0A3"
-        "U+E0B0-U+E0BF"
-        "U+E0C0-U+E0C8"
-        "U+E0CC-U+E0CF"
-        "U+E0D0-U+E0D2"
-        "U+E0D4"
-        "U+E700-U+E7C5"
-        "U+F000-U+F2E0"
-        "U+2665"
-        "U+26A1"
-        "U+F400-U+F4A8"
-        "U+F67C"
-        "U+E000-U+E00A"
-        "U+F300-U+F313"
-        "U+E5FA-U+E62B"
-      ];
-    in
-      (builtins.concatStringsSep "," mappings) + " Symbols Nerd Font";
+    # 字体配置（重要！添加这个）
+    font = {
+      name = "JetBrains Mono";
+      size = 11;
+    };
+
+    # 其他设置
+    settings = {
+      confirm_os_window_close = 0;
+      dynamic_background_opacity = true;
+      enable_audio_bell = false;
+      mouse_hide_wait = "-1.0";
+      window_padding_width = 10;
+      background_opacity = "0.5";
+      background_blur = 5;
+
+      # 保持你的符号映射
+      symbol_map = let
+        mappings = [
+          "U+23FB-U+23FE"
+          "U+2B58"
+          "U+E200-U+E2A9"
+          "U+E0A0-U+E0A3"
+          "U+E0B0-U+E0BF"
+          "U+E0C0-U+E0C8"
+          "U+E0CC-U+E0CF"
+          "U+E0D0-U+E0D2"
+          "U+E0D4"
+          "U+E700-U+E7C5"
+          "U+F000-U+F2E0"
+          "U+2665"
+          "U+26A1"
+          "U+F400-U+F4A8"
+          "U+F67C"
+          "U+E000-U+E00A"
+          "U+F300-U+F313"
+          "U+E5FA-U+E62B"
+        ];
+      in
+        (builtins.concatStringsSep "," mappings) + " Symbols Nerd Font";
+    };
+
+    # 额外的字体配置（可选）
+    extraConfig = ''
+      # 字体回退设置
+      bold_font auto
+      italic_font auto
+      bold_italic_font auto
+
+      # 如果需要中文字体支持
+      # font_family JetBrains Mono
+      # fallback_font Noto Sans CJK SC
+    '';
   };
-};
+
+  # ============ 删除错误的 activationScripts ============
+  # 删除下面这整个块，它会导致错误：
+  # system.activationScripts.setupKitty = ''
+  #   mkdir -p /home/yourusername/.config/kitty
+  #   cat > /home/yourusername/.config/kitty/kitty.conf << EOF
+  #   font_family      JetBrains Mono
+  #   font_size        11.0
+  #   bold_font        auto
+  #   italic_font      auto
+  #   bold_italic_font auto
+  #   EOF
+  # '';
 
   # ============ 方法1：直接克隆 Fish 配置仓库 ============
   programs.fish.enable = true;
@@ -213,30 +235,11 @@ in
   };
 
   # ============ 修正的 AstroVim 配置 ============
-
-  # 使用 activation script 在每次切换时设置可写的配置
-  home.activation.setupNeovim = config.lib.dag.entryAfter ["writeBoundary"] ''
-    NVIM_CONFIG="$HOME/.config/nvim"
-    CONFIG_SRC="${astronvimConfig}"
-
-    # 如果配置目录不存在，或者源配置有更新，则重新复制
-    if [ ! -d "$NVIM_CONFIG" ] || [ ! -f "$NVIM_CONFIG/init.lua" ]; then
-      echo "Setting up Neovim configuration..."
-      rm -rf "$NVIM_CONFIG"
-      cp -r "$CONFIG_SRC" "$NVIM_CONFIG"
-      chmod -R u+w "$NVIM_CONFIG"
-      echo "Neovim configuration copied and made writable"
-    elif [ "$CONFIG_SRC/init.lua" -nt "$NVIM_CONFIG/init.lua" ]; then
-      echo "Updating Neovim configuration..."
-      rm -rf "$NVIM_CONFIG"
-      cp -r "$CONFIG_SRC" "$NVIM_CONFIG"
-      chmod -R u+w "$NVIM_CONFIG"
-      echo "Neovim configuration updated"
-    fi
-  '';
+  # （保持你的原配置不变）
 
   # 设置默认编辑器
   home.sessionVariables = {
+    CLANGD_PATH = "/run/current-system/sw/bin/clangd";
     EDITOR = "nvim";
     VISUAL = "nvim";
   };

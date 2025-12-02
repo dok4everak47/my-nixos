@@ -158,9 +158,6 @@
     ];
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -195,7 +192,7 @@
 
      haruna
 
-     vdhcoapp
+     # vdhcoapp
 
      yutto
 
@@ -207,9 +204,16 @@
      mpd
 
      vicinae
+     
+    clang-tools
 
+    fira-code
 
   ];
+
+  # 配置firefox插件
+  programs.firefox.enable = true;
+  programs.firefox.nativeMessagingHosts.packages = with pkgs; [ vdhcoapp ];
 
   # 配置MPD
   services.mpd = {
@@ -235,32 +239,39 @@ services.mpd.user = "dok4ever";
   # 将默认编辑器设置为 nvim
   environment.variables.EDITOR = "nvim";
 
-  fonts = {
-    fonts = with pkgs; [
-      dejavu_fonts
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+
+    dejavu_fonts
       # 中文字体包
       wqy_microhei
       wqy_zenhei
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       fira-code
-      
+
       # 可选：其他中文字体
       source-han-sans
       source-han-serif
       sarasa-gothic
-    ];
-    
-    # 启用字体缓存
-    fontconfig = {
+  ];
+
+  fonts.fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "Sarasa Mono SC" "DejaVu Sans Mono" ];
+        monospace = [ "FiraCode" "DejaVu Sans Mono" ];
         sansSerif = [ "Source Han Sans SC" "Noto Sans CJK SC" ];
         serif = [ "Source Han Serif SC" "Noto Serif CJK SC" ];
       };
     };
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
