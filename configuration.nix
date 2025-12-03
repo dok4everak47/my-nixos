@@ -206,6 +206,8 @@
 
     zoxide
 
+    clash-verge-rev
+
 
 
   ];
@@ -215,7 +217,6 @@
     enable = true;
     configFile = "/home/dok4ever/.config/mihomo/config.yaml";
     webui = pkgs.metacubexd;
-    #...
   };
 
   # 设置system proxy
