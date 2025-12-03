@@ -261,7 +261,125 @@ in
     VISUAL = "nvim";
 
     RIPGREP_CONFIG_PATH = "${config.home.homeDirectory}/.config/ripgreprc";
+
+    # Haruna 相关环境变量
+  DEFAULT_VIDEO_PLAYER = "haruna";
+  VIDEO_PLAYER = "haruna";
+  AUDIO_PLAYER = "haruna";
+  MEDIA_PLAYER = "haruna";
+
+  # 特定应用程序的变量
+  MPLAYER = "haruna";
+  SMPLAYER = "haruna";
+
+  # XDG 相关
+  XDG_VIDEO_PLAYER = "haruna";
+  XDG_AUDIO_PLAYER = "haruna";
   };
+
+  xdg.configFile."mimeapps.list".force = true;
+  xdg.configFile."mimeapps.list".text = ''
+    [Default Applications]
+    video/mp4=haruna.desktop
+    video/x-matroska=haruna.desktop
+    video/avi=haruna.desktop
+    video/x-msvideo=haruna.desktop
+    video/quicktime=haruna.desktop
+    video/x-flv=haruna.desktop
+    video/webm=haruna.desktop
+    video/mpeg=haruna.desktop
+    video/3gpp=haruna.desktop
+    video/x-ms-wmv=haruna.desktop
+
+    audio/mpeg=haruna.desktop
+    audio/x-wav=haruna.desktop
+    audio/flac=haruna.desktop
+    audio/ogg=haruna.desktop
+    audio/x-m4a=haruna.desktop
+    audio/x-ms-wma=haruna.desktop
+    audio/aac=haruna.desktop
+
+    application/x-matroska=haruna.desktop
+    application/ogg=haruna.desktop
+
+    # 保持其他应用程序的默认设置
+    [Added Associations]
+    video/mp4=haruna.desktop;
+    video/x-matroska=haruna.desktop;
+    video/avi=haruna.desktop;
+    video/x-msvideo=haruna.desktop;
+    video/quicktime=haruna.desktop;
+    video/x-flv=haruna.desktop;
+    video/webm=haruna.desktop;
+    video/mpeg=haruna.desktop;
+    video/3gpp=haruna.desktop;
+    video/x-ms-wmv=haruna.desktop;
+    audio/mpeg=haruna.desktop;
+    audio/x-wav=haruna.desktop;
+    audio/flac=haruna.desktop;
+    audio/ogg=haruna.desktop;
+    audio/x-m4a=haruna.desktop;
+    audio/x-ms-wma=haruna.desktop;
+    audio/aac=haruna.desktop;
+    application/x-matroska=haruna.desktop;
+    application/ogg=haruna.desktop;
+  '';
+
+  home.activation.setupHarunaMime = config.lib.dag.entryAfter ["writeBoundary"] ''
+  # 确保 mimeapps.list 文件存在
+  MIMEAPPS_FILE="$HOME/.config/mimeapps.list"
+
+  if [ ! -f "$MIMEAPPS_FILE" ]; then
+    echo "Creating mimeapps.list..."
+    mkdir -p "$HOME/.config"
+    touch "$MIMEAPPS_FILE"
+  fi
+
+  # 更新 mimeapps.list 中的 Haruna 配置
+  echo "Updating MIME associations for Haruna..."
+
+  # 使用 xdg-mime 命令行工具设置
+  if command -v xdg-mime >/dev/null 2>&1; then
+    # 视频类型
+    for mime in video/mp4 video/x-matroska video/avi video/x-msvideo \
+                video/quicktime video/x-flv video/webm video/mpeg \
+                video/3gpp video/x-ms-wmv; do
+      xdg-mime default haruna.desktop "$mime" 2>/dev/null || true
+    done
+
+    # 音频类型
+    for mime in audio/mpeg audio/x-wav audio/flac audio/ogg \
+                audio/x-m4a audio/x-ms-wma audio/aac; do
+      xdg-mime default haruna.desktop "$mime" 2>/dev/null || true
+    done
+
+    # 容器格式
+    xdg-mime default haruna.desktop application/x-matroska 2>/dev/null || true
+    xdg-mime default haruna.desktop application/ogg 2>/dev/null || true
+  fi
+'';
+
+  xdg.configFile."yazi/init.lua".text = ''
+    -- yazi 初始化配置
+    ya = ya or {}
+
+    -- 设置打开规则：所有文件都使用 xdg-open
+    ya.open = {
+      rules = {
+        {
+          matcher = function(file)
+            return true  -- 匹配所有文件
+          end,
+          use = function(files)
+            -- 对每个文件使用 xdg-open
+            for _, file in ipairs(files) do
+              os.execute("xdg-open " .. vim.fn.shellescape(file))
+            end
+          end
+        }
+      }
+    }
+  '';
 
   # 确保必要的目录存在
   home.activation.createConfigDir = config.lib.dag.entryAfter ["writeBoundary"] ''

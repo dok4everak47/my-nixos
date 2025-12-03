@@ -204,6 +204,8 @@
 
      mihomo
 
+    zoxide
+
 
 
   ];
