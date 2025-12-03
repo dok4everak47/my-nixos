@@ -298,6 +298,12 @@ services.mpd.user = "dok4ever";
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/main.tar.gz") {
+      inherit pkgs;
+    };
+  };
+
   nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
   system.stateVersion = "25.11"; # Did you read the comment?
 
