@@ -69,6 +69,7 @@
     GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
+
   };
 
   # 启用 fish shell
@@ -202,6 +203,7 @@
      vicinae
 
      mihomo
+
 
 
   ];

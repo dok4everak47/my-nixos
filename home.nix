@@ -193,6 +193,26 @@ in
   # 使用你的 Fish 配置仓库
   home.file.".config/fish".source = myFishConfig;
 
+  home.file.".config/ripgreprc".text = ''
+    # ripgrep 配置文件
+    --color=always
+    --smart-case
+    --hidden
+    --follow
+    --max-columns=150
+
+    # 忽略的目录/文件
+    --glob=!node_modules/
+    --glob=!.git/
+    --glob=!*.min.js
+    --glob=!*.bundle.js
+    --glob=!dist/
+    --glob=!build/
+    --glob=!target/
+
+  '';
+
+
   programs.bash = {
     enable = true;
     enableCompletion = true;
@@ -239,6 +259,8 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
+
+    RIPGREP_CONFIG_PATH = "${config.home.homeDirectory}/.config/ripgreprc";
   };
 
   # 确保必要的目录存在
