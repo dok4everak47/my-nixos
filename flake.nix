@@ -4,6 +4,10 @@
   inputs = {
     # NixOS 官方软件源，这里使用 nixos-25.11 分支
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";

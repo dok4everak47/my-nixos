@@ -265,7 +265,7 @@ services.mpd.user = "dok4ever";
     fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "Sarasa Mono SC" "DejaVu Sans Mono" ];
+        monospace = [ "Fira Code" "DejaVu Sans Mono" ];
         sansSerif = [ "Source Han Sans SC" "Noto Sans CJK SC" ];
         serif = [ "Source Han Serif SC" "Noto Serif CJK SC" ];
       };
